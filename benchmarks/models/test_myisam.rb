@@ -1,3 +1,3 @@
 class TestMyISAM < ActiveRecord::Base
-  self.table_name = 'test_myisam'
+  set_table_name 'test_myisam'
 end

@@ -25,7 +25,6 @@ log/*.log
 test.db
 test/database.yml
 
-.ruby-*
 .bundle/
 .redcar/
 .rvmrc
