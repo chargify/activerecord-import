@@ -1,3 +1,3 @@
 class TestMemory < ActiveRecord::Base
-  self.table_name = 'test_memory'
+  set_table_name 'test_memory'
 end
