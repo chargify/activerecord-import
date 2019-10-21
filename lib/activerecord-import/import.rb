@@ -344,7 +344,7 @@ class ActiveRecord::Base
     end
 
     def import_helper( *args )
-      options = { validate: true, timestamps: true }
+      options = { validate: true, timestamps: true, type_cast: [] }
       options.merge!( args.pop ) if args.last.is_a? Hash
       # making sure that current model's primary key is used
       options[:primary_key] = primary_key
@@ -356,6 +356,8 @@ class ActiveRecord::Base
 
       is_validating = options[:validate]
       is_validating = true unless options[:validate_with_context].nil?
+
+      columns_to_type_cast = options[:type_cast]
 
       # assume array of model objects
       if args.last.is_a?( Array ) && args.last.first.is_a?(ActiveRecord::Base)
@@ -378,7 +380,11 @@ class ActiveRecord::Base
             if stored_attrs.any? && stored_attrs.key?(name.to_sym)
               model.read_attribute(name.to_s)
             else
-              model.read_attribute_before_type_cast(name.to_s)
+              if columns_to_type_cast.index(name.to_sym)
+                model.read_attribute(name.to_s)
+              else
+                model.read_attribute_before_type_cast(name.to_s)
+              end
             end
           end
         end
